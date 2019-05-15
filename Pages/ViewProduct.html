@@ -1,0 +1,179 @@
+﻿<!--<link href="../css/navbar.css" rel="stylesheet" />
+    <link href="../css/UpdateformStyle .css" rel="stylesheet" />
+    <link href="../css/popup.css" rel="stylesheet" />-->
+
+<link href="http://xinixserver/XINIX_TrainingX/css/navbar.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/UpdateformStyle.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/popup.css" rel="stylesheet" />
+<div class="navbar">
+    <a href="#/viewTraining"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="#/viewTraining"> Training Information </a>
+    <a href="#/viewProduct"> Product </a>
+    <a href="#/outStanding"> Outstanding Training </a>
+    <a style="float:right" href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
+    <label style="color:white;margin:15px;">Welcome {{userName}}</label>
+    <!--<div class="dropdown">
+        <button class="dropbtn">
+
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="" ng-click="logout()">Log out</a>
+        </div>
+    </div>-->
+</div>
+<form>
+    <h1 style="font-family:Merriweather,Georgia,serif;"> View Product Information</h1>
+    <div ng-controller="viewProductCntrl">
+        <div class="group">
+            <div class="left">
+                <div>
+                    <label for="productType" class="redacted">Search by Product Type</label>
+                    <input type="text" class="form-control " placeholder="Search product type ...." ng-model="searchText.ProductType" /><br />
+                </div>
+            </div>
+            <div class="right">
+                <label for="productSubName" class="redacted">Search by Product Sub Type</label>
+                <div>
+                    <input type="text" class="form-control " placeholder="Search product sub type...." ng-model="searchText.ProductSubType" /><br />
+                </div>
+            </div>
+        </div>
+        <div>
+
+            <input type="button" value="Add New Product" ng-click="AddNewProduct()" />
+        </div>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Product Type
+                        </th>
+                        <th>
+                            Product Sub Type
+                        </th>
+                        <th>
+                            Training Type
+                        </th>
+                        <!--<th>
+                            LogUserId
+                        </th>
+                        <th>
+                            LogDate
+                        </th>-->
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr ng-repeat="products in ListProducts |filter:searchText  | offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
+
+                        <td ng-bind="products.ProductType" class="auto-style43"></td>
+                        <td ng-bind="products.ProductSubType" class="auto-style44"></td>
+                        <td ng-bind="products.TrainingType" class="auto-style47"></td>
+                        <!--<td ng-bind="ConsultantTraining.LogUserId" class="auto-style48">
+                        <td ng-bind="ConsultantTraining.LogDate | mvcDate: 'yyyy-MM-dd HH:mm:ss'" class="auto-style55"></td>-->
+                        <!--<td class="auto-style26">
+                            <input type="button" value="Edit" ng-click="editConsultant(ConsultantTraining)" />
+                        </td>
+                        <td class="auto-style1">
+                            <a href="#" ng-click="Delete(ConsultantTraining.Id)">Delete</a>
+                        </td>-->
+                        <!--<td class="auto-style1">
+
+                            <input type="button" data-toggle="modal" value="Edit" ng-click="editProduct(products)" />
+                        </td>-->
+                        <td class="auto-style1">
+                            <input type="button" value="Delete" ng-click="Delete(products.Id)">
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            <div class="center">
+                                <div class="pagination">
+                                    <ul style="list-style-type:none;color:white">
+                                        <li style="float:left" ng-class="prevPageDisabled()">
+                                            <a href ng-click="prevPage()">« Prev</a>
+                                        </li>
+                                        <li style="float:left" ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a href="#/viewProduct">{{n+1}}</a>
+                                        </li>
+                                        <li style="float:left" ng-class="nextPageDisabled()">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a href ng-click="nextPage()">Next »</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Start Edit Modal -->
+        <!--<div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="editDialogLabel">Edit Product</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="inputTask">Product Type</label>
+                        <div class="controls">
+                            <input readonly type="text" name="EmpId" placeholder="Product Type" maxlength="30" class="redacted" ng-model="ListProducts.productType" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="inputTask">Product Sub Type</label>
+                        <div class="controls">
+                            <input type="text" name="Completed" maxlength="30" placeholder="Product Sub Type" ng-model="ListProducts.productSubType" class="redacted" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputDescription">Training Type</label>
+                        <div class="controls">
+                            <select class="redacted" ng-model="trainingType" ng-options="item.TrainingType as item.TrainingType for item in ListProducts | unique:'TrainingType'">
+                                <option value="">Choose</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputDescription">Department Name</label>
+                        <div class="controls">
+                            <select class="redacted" ng-model="departmentId" ng-options="item.Id as item.Name for item in DepartmentDropList">
+                                <option value="">Choose</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" ng-click="updateProduct(ListProducts)" data-dismiss="modal">Update</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+
+            </div>
+        </div>-->
+        <!-- End Edit Modal -->
+
+
+
+    </div>
+</form>

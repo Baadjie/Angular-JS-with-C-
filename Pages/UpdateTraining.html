@@ -1,0 +1,81 @@
+﻿<!--<link href="../css/navbar.css" rel="stylesheet" />
+    <link href="../css/UpdateformStyle .css" rel="stylesheet" />
+    <link href="../css/popup.css" rel="stylesheet" />-->
+<link href="http://xinixserver/XINIX_TrainingX/css/navbar.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/UpdateformStyle.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/popup.css" rel="stylesheet" />
+<form>
+    <h1> Update Training Information</h1>
+    <div class="container" ng-controller="editTrainingCtrl">
+
+        <div class="group">
+            <div class="left">
+                <input readonly type="text" name="EmpId" placeholder="Employee Name" maxlength="30" class="redacted" ng-model="empTraining.EmployeeID" />
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="fullName" class="redacted">Product Name</label>
+                <select ng-model="empTraining.prodId" class="redacted">
+
+                    <option ng-repeat="product in Productlist" value="{{product.Id}}">
+
+                        {{product.ProductSubType}}
+                    </option>
+
+                </select>
+            </div>
+        </div>
+        <!--<div class="group">
+            <div class="left">
+                <label for="fullName" class="redacted">Date Completed</label>
+                <input class="redacted" type="date" name="Completed" maxlength="30" placeholder="Date Completed" ng-model="ConsultantTraininglist.completed" />
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="fullName" class="redacted">Date Verified</label>
+                <input type="date" name="Completed" maxlength="30" placeholder="Date Verified" ng-model="ConsultantTraininglist.verified" class="redacted" />
+            </div>
+        </div>-->
+        <div class="group">
+            <div class="left">
+                <input type="text" name="Completed" maxlength="30" placeholder="Training Provided By" ng-model="empTraining.TrainingProvidedBy" class="redacted" />
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <input type="text" name="Completed" maxlength="30" placeholder="Type Of Assessment" class="redacted" ng-model="empTraining.TypeOfAssessment" />
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <input type="text" name="Completed" maxlength="30" placeholder="Expectation" class="redacted" ng-model="empTraining.ExpectationForCompetence" />
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="phone" class="redacted">OutcomeStatus</label>
+                <select class="redacted" ng-model="empTraining.OutcomeStatus" name="Last_Name" maxlength="30" ng-options="x for x in outcomeStatu" />
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <textarea class="redacted" type="text" id="fullName" name="fullName" placeholder="Comment.." ng-model="empTraining.Comment" tabindex="5" rows="10"></textarea>
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+            </div>
+        </div>
+        <input class="redacted" type="button" value="Update" ng-click="updateConsultant(empTraining)" />
+    </div>
+</form>

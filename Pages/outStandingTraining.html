@@ -1,0 +1,123 @@
+﻿<!--<link href="../css/navbar.css" rel="stylesheet" />
+    <link href="../css/UpdateformStyle .css" rel="stylesheet" />
+    <link href="../css/popup.css" rel="stylesheet" />-->
+<link href="http://xinixserver/XINIX_TrainingX/css/navbar.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/UpdateformStyle.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/popup.css" rel="stylesheet" />
+<div class="navbar">
+    <a href="#/viewTraining"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="#/viewTraining"> Training Information </a>
+    <a href="#/viewProduct"> Product </a>
+    <a href="#/outStanding"> Outstanding Training </a>
+    <a style="float:right" href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
+    <label style="color:white;margin:15px;">Welcome {{userName}}</label>
+    <!--<div class="dropdown">
+        <button class="dropbtn">
+
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="" ng-click="logout()">Log out</a>
+        </div>
+    </div>-->
+</div>
+<form>
+    <h1 style="font-family:Merriweather,Georgia,serif;">OutStanding Training</h1>
+    <div ng-controller="outstandingCntrl">
+
+        <div class="group">
+            <div class="left">
+                <div>
+                    <label for="name" class="redacted">Search by Employee Name</label>
+                    <input type="text" class="form-control " placeholder="Search employee name ...." ng-model="searchText.Name" /><br />
+                </div>
+            </div>
+            <div class="right">
+                <label for="productName" class="redacted">Search by Product Type</label>
+                <div>
+                    <input type="text" class="form-control " placeholder="Search product type...." ng-model="searchText.ProductType" /><br />
+                </div>
+            </div>
+            <div class="left">
+                <div>
+                    <label for="name" class="redacted">Search by Product Sub Type</label>
+                    <input type="text" class="form-control " placeholder="Search product sub type ...." ng-model="searchText.ProductSubType" /><br />
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        Product Type
+                    </th>
+                    <th>
+                        Product Sub Type
+                    </th>
+                    <th>
+                        Training Type
+                    </th>
+                    <!--<th>
+                        TrainingCheckAll
+                    </th>-->
+                    <th>
+                        Position
+                    </th>
+
+                    <th>
+                        Department
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="outstandingTraining in outstandingTrainingList|filter:searchText | offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
+                    <td ng-bind="outstandingTraining.Name" class="auto-style43"></td>
+                    <td ng-bind="outstandingTraining.ProductType" class="auto-style44"></td>
+
+                    <td ng-bind="outstandingTraining.ProductSubType" class="auto-style55"></td>
+                    <td ng-bind="outstandingTraining.TrainingType" class="auto-style54"></td>
+
+                    <!--<td ng-bind="outstandingTraining.TrainingCheckAll" class="auto-style47"></td>-->
+                    <td ng-bind="outstandingTraining.Position" class="auto-style48"></td>
+                    <td ng-bind="outstandingTraining.Department" class="auto-style46"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <div class="center">
+                            <div class="pagination">
+                                <ul style="list-style-type:none;color:white">
+                                    <li style="float:left" ng-class="prevPageDisabled()">
+                                        <a href ng-click="prevPage()">« Prev</a>
+                                    </li>
+                                    <li style="float:left" ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a href="#/outStanding">{{n+1}}</a>
+                                    </li>
+                                    <li style="float:left" ng-class="nextPageDisabled()">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a href ng-click="nextPage()">Next »</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</form>

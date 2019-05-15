@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html ng-app="loginApp">
+<head>
+    <title>Xinix_Training</title>
+    <link rel="icon" href="Images/logo.png" type="image/x-icon" style="border-radius:50%">
+    <meta charset="utf-8" />
+   
+    <link href="css/tablePaging.css" rel="stylesheet" />
+    <link href="css/navbar.css" rel="stylesheet" />
+
+    <link href="style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />-->
+    <link href="css/twitter.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- The main CSS file -->
+    <link href="style.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular-messages.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script data-require="angular-animate@*" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular-animate.js"></script>
+
+    <script src="Scripts/ng-table.js"></script>
+
+    <script>
+        document.write('<base href="' + document.location + '" />');
+    </script>
+
+    <script>
+        $("input").on("change", function () {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change")
+    </script>
+    <!--Login script-->
+    <script src="Scripts/Login.js"></script>
+
+    <!--Employee script-->
+    <script src="Scripts/EmployeeSrcipt/module.js"></script>
+    <script src="Scripts/EmployeeSrcipt/routing.js"></script>
+    <script src="Scripts/EmployeeSrcipt/controller.js"></script>
+    <script src="Scripts/EmployeeSrcipt/service.js"></script>
+   
+    <!--Product and training script-->
+    <script src="Scripts/TrainigScript/addTrainingScript.js"></script>
+    <script src="Scripts/TrainigScript/product.js"></script>
+    <script src="Scripts/TrainigScript/outstanding.js"></script>
+
+    <script src="app.js" type="text/javascript"></script>
+</head>
+
+<!-- The ng-app directive tells angular that the code below should be evaluated -->
+
+<body>
+    <div ng-view></div>
+</body>
+</html>

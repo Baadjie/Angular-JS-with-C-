@@ -1,0 +1,95 @@
+﻿<!--<link href="../css/navbar.css" rel="stylesheet" />
+<link href="../css/UpdateformStyle .css" rel="stylesheet" />
+<link href="../css/InputValidationStyleSheet.css" rel="stylesheet" />-->
+<link href="http://xinixserver/XINIX_TrainingX/css/navbar.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/UpdateformStyle.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/InputValidationStyleSheet.css" rel="stylesheet" />
+<div class="navbar">
+    <a href="#/viewTraining"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="#/viewTraining"> Training Information </a>
+    <a href="#/viewProduct"> Product </a>
+    <a href="#/outStanding"> Outstanding Training </a>
+    <a style="float:right" href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
+    <label style="color:white;margin:15px;">Welcome {{userName}}</label>
+    <!--<div class="dropdown">
+        <button class="dropbtn">
+
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="" ng-click="logout()">Log out</a>
+        </div>
+    </div>-->
+</div>
+
+<form name="exampleForm" novalidate>
+    <div class="container" ng-controller="addProductCntrl">
+
+        <h1 style="font-family:Merriweather,Georgia,serif;"> Add Product</h1>
+
+        <div class="group">
+            <div class="left">
+                <label for="ProductType" class="redacted">Product Type</label>
+                <input type="text" name="prod_type" placeholder="Product type.." ng-model="productType" class="redacted" required />
+                <div ng-if="submitted || exampleForm.prod_type.$dirty"
+                     ng-messages="exampleForm.prod_type.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+            <div class="right">
+                <label for="TrainingType" class="redacted">Product Sub Type</label>
+                <input type="text" name="prod_sub_type" placeholder="Product sub type.." ng-model="productSubType" class="redacted" required />
+                <div ng-if="submitted || exampleForm.prod_sub_type.$dirty"
+                     ng-messages="exampleForm.prod_type.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="group">
+            <div class="left">
+                <label for="TrainingType" class="redacted">Product Sub Type</label>
+                <input type="text" placeholder="Product Sub Type.." ng-model="productSubType" class="redacted" />
+            </div>
+        </div>-->
+        <div class="group">
+            <div class="left">
+                <!--<input type="text" placeholder="Training Type.." ng-model="trainingType" class="redacted" />-->
+                <label for="TrainingType" class="redacted">Training Type</label>
+                <select name="training_type" class="redacted" ng-model="trainingType" ng-options="item.TrainingType as item.TrainingType for item in ListProducts | unique:'TrainingType'" required>
+                    <option value="">Choose</option>
+                </select>
+                <div ng-if="submitted || exampleForm.training_type.$dirty"
+                     ng-messages="exampleForm.training_type.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+            <div class="right">
+                <!--<input type="text" readonly placeholder="Department Id.." ng-model="departmentId" class="redacted" />-->
+                <label for="fullName" class="redacted">Department Name</label>
+                <select name="department" class="redacted" ng-model="departmentId" ng-options="item.Id as item.Name for item in DepartmentDropList" required>
+                    <option value="">Choose</option>
+                </select>
+                <div ng-if="submitted || exampleForm.department.$dirty"
+                     ng-messages="exampleForm.department.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="group">
+            <div class="left">
+
+                <label for="fullName" class="redacted">Department Name</label>
+                <select class="redacted" ng-model="departmentId" ng-options="item.Id as item.Name for item in DepartmentDropList">
+                    <option value="">Choose</option>
+                </select>
+            </div>
+        </div>-->
+        <div>
+            <input type="button" value="Save" ng-click="Save()" class="redacted" />
+            <!--<input type="submit" value="Save" class="redacted" />-->
+        </div>
+
+    </div>
+</form>

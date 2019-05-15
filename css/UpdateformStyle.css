@@ -1,0 +1,43 @@
+﻿textarea, input:not([type=button]):not([type=submit]),select{
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.2);
+    padding: .5em 0em;
+    font-family: sans-serif;
+    border-radius: 5px;
+}
+
+input[type=button], input[type=submit] {
+    cursor: pointer;
+    margin: 0;
+    padding: .5em 1em;
+    background: #3498db;
+    border: none;
+    color: #fff;
+    border-radius:5px;
+}
+
+.group:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+form {
+    width: 80em;
+    margin: 0 auto;
+    /*float:left;*/
+}
+
+    form div.group > div {
+        width: 46%;
+        height:5%;
+        margin: 5px 0 .5em;
+    }

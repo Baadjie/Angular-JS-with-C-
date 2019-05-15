@@ -1,0 +1,330 @@
+﻿<html>
+<head>
+    <!--<link href="../css/navbar.css" rel="stylesheet" />
+    <link href="../css/UpdateformStyle .css" rel="stylesheet" />
+    <link href="../css/popup.css" rel="stylesheet" />-->
+    <link href="http://xinixserver/XINIX_TrainingX/css/navbar.css" rel="stylesheet" />
+    <link href="http://xinixserver/XINIX_TrainingX/css/UpdateformStyle.css" rel="stylesheet" />
+    <link href="http://xinixserver/XINIX_TrainingX/css/popup.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="navbar">
+        <a href="#/viewTraining"><i class="fa fa-fw fa-home"></i>Home</a>
+        <a href="#/viewTraining"> Training Information </a>
+        <a href="#/viewProduct"> Product </a>
+        <a href="#/outStanding"> Outstanding Training </a>
+        <a style="float:right"  href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
+        <label style="color:white;margin:15px;">Welcome {{userName}}</label>
+        <!--<div class="dropdown">
+          
+            <button class="dropbtn">
+
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="" ng-click="logout()">Log out</a>
+            </div>
+        </div>-->
+    </div>
+   
+    <form>
+        <h1 style="font-family:Merriweather,Georgia,serif;">Training Details Search Page</h1>
+        <div ng-controller="viewTrainingCntrl">
+
+            <div class="group">
+                <div class="left">
+                    <div>
+                        <label for="name" class="redacted">Search by Employee Name</label>
+                        <input type="text" class="form-control " placeholder="Search employee name ...." ng-model="searchText.Name" /><br />
+                    </div>
+                </div>
+                <div class="right">
+                    <label for="productName" class="redacted">Search by Product Name</label>
+                    <div>
+                        <input type="text" class="form-control " placeholder="Search product name...." ng-model="searchText.ProductName" /><br />
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <input type="button" value="Add Training" ng-click="AddTraining()" />
+                <!--<input type="button" value="Add New Product" ng-click="AddNewProduct()" />-->
+            </div>
+
+            <!--<table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Employee Name
+                </th>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Date Completed
+                </th>
+
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="viewFile in ViewFiles ">
+                <td ng-bind="viewFile.FileName" class="auto-style43"></td>
+                <td ng-href="viewFile.Path" ng-bind="viewFile.Path" class="auto-style44"></td>
+                <td><a ng-href="{{viewFile.Path}}" target="_blank">{{viewFile.Path}}</a></td>
+                <td><a ng-href="{{viewFile.Path}}" download="{{viewFile.FileName}}"  [target]="'_blank'">View</a></td>
+
+                <td class="auto-style1">
+
+                    <input type="button" value="Download"  ng-click="DownloadUploadedFile(viewFile.Path)"  target="_blank">
+                </td>
+            </tr>
+        </tbody>
+    </table>-->
+
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Product Name
+                        </th>
+                        <th>
+                            Date Completed
+                        </th>
+                        <!--<th>
+                    Date Verified
+                </th>-->
+                        <th>
+                            Training Provided By
+                        </th>
+                        <!--<th>
+                    Outcome Status
+                </th>-->
+
+                        <th>
+                            Type Of Assessment
+                        </th>
+
+                        <!--<th>
+                    Expectation
+                </th>-->
+                        <!--<th>
+                    Comment
+                </th>-->
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="ConsultantTraining in ConsultantTraininglist  |filter:searchText| offset: currentPage*itemsPerPage | limitTo: itemsPerPage">
+
+                        <td ng-bind="ConsultantTraining.Name" class="auto-style43"></td>
+                        <td ng-bind="ConsultantTraining.ProductName" class="auto-style44"></td>
+
+                        <td ng-bind="ConsultantTraining.DateCompleted | mvcDate: 'yyyy-MM-dd'" class="auto-style55"></td>
+                        <!--<td ng-bind="ConsultantTraining.Verified | mvcDate: 'yyyy-MM-dd HH:mm:ss'" class="auto-style54"></td>-->
+
+                        <td ng-bind="ConsultantTraining.TrainingProvidedBy" class="auto-style47"></td>
+                        <!--<td ng-bind="ConsultantTraining.OutcomeStatus" class="auto-style48"></td>-->
+                        <td ng-bind="ConsultantTraining.TypeOfAssessment" class="auto-style46"></td>
+
+                        <!--<td ng-bind="ConsultantTraining.ExpectationForCompetence" class="auto-style50"></td>-->
+                        <!--<td ng-bind="ConsultantTraining.Comment" class="auto-style52"></td>-->
+                        <!--<td class="auto-style26">
+                    <input type="submit" value="Edit Training" ng-click="EditTraining(ConsultantTraining)">
+
+                </td>
+                <td class="auto-style26">
+                    <input type="button" value="Edit" ng-click="editConsultant(ConsultantTraining)" />
+                </td>-->
+                        <td class="auto-style1">
+                            <!--<a class="btn" data-toggle="modal" ng-click="editConsultant(ConsultantTraining)">Edit</a>-->
+                            <input type="button" data-toggle="modal" value="Edit" onClick="refreshPage()" ng-click="editConsultant(ConsultantTraining)" />
+                        </td>
+                        <td class="auto-style1">
+                            <!--<button class="btn btn-danger" type="button" ng-click="Delete(ConsultantTraining.Id)">delete</button>-->
+                            <input  type="button" value="Delete"  ng-click="Delete(ConsultantTraining.Id)" >
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            <div class="center">
+                                <div class="pagination">
+                                    <ul style="list-style-type:none;color:white">
+                                        <li style="float:left" ng-class="prevPageDisabled()">
+                                            <a href ng-click="prevPage()">« Prev</a>
+                                        </li>
+                                        <li style="float:left" ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a href="#/viewTraining">{{n+1}}</a>
+                                        </li>
+                                        <li style="float:left" ng-class="nextPageDisabled()">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a href ng-click="nextPage()">Next »</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+            <!-- Start Edit Modal -->
+            <div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="window.location.reload()">×</button>
+                    <h1 id="editDialogLabel" style="font-family:Merriweather,Georgia,serif;">Update Employee Training</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Employee ID</label>
+                            <div class="controls">
+                                <!--<input readonly type="text" name="EmpId" placeholder="Employee Name" maxlength="30" class="redacted" ng-model="ConsultantTraininglist.empID" >-->
+
+                                <select ng-disabled="true" ng-model="ConsultantTraininglist.empID" ng-options="consultant.EmployeeID as consultant.ConsultantName for consultant in EmpTraininglist" class="redacted"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputDescription">Product Name</label>
+                            <div class="controls" readonly>
+
+                                <!--<input readonly type="text" name="EmpId" placeholder="Employee Name" maxlength="30" class="redacted" ng-model="ConsultantTraininglist.prodId" />-->
+                                <!--<select ng-model="ConsultantTraininglist.prodId" class="redacted">
+                <option ng-repeat="product in Productlist" value="{{product.Id}}">{{product.ProductSubType}}</option>
+            </select>-->
+                                <select ng-disabled="true" ng-model="ConsultantTraininglist.prodId" ng-options="product.Id as product.ProductSubType for product in Productlist" class="redacted"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Training Provided By</label>
+                            <div class="controls">
+                                <input type="text" name="Completed" maxlength="30" placeholder="Training Provided By" ng-model="ConsultantTraininglist.providedBy" class="redacted" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Type Of Assessment</label>
+                            <div class="controls">
+                                <input type="text" name="Completed" maxlength="30" placeholder="Type Of Assessment" class="redacted" ng-model="ConsultantTraininglist.typeOfAssessment" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Outcome Status</label>
+                            <div class="controls">
+                                <!--<select class="redacted" ng-model="ConsultantTraininglist.outcomeStatus" name="Last_Name" maxlength="30" ng-options="x for x in outcomeStatu" />-->
+                                <input readonly type="text" name="Completed" maxlength="30" placeholder="Outcome Status" class="redacted" ng-model="ConsultantTraininglist.outcomeStatus" />
+                            </div>
+                        </div>
+
+
+                        <!--<input type="text" ng-model="trainingId">-->
+                        <input type="button" ng-click="isShowHide('show');clickButton(ConsultantTraininglist.Id);refreshPage()"  value="View Documents">
+                        <br />
+                        <!--Show Div Based on showval-->
+                        <div ng-show="showval">
+                            <table style="width:50px">
+                                <!--<table class="table table-hover">-->
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            File Name
+                                        </th>
+                                        <th>
+                                            File Path
+                                        </th>
+
+                                       
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <!--<tr ng-repeat="ViewFile in ViewFiles">
+                <td ng-bind="ViewFile.FileName"></td>
+                <td ng-bind="ViewFile.Path"></td>
+                <td><input type="button" value="Download" ng-click="DownloadUploadedFile(ViewFile.Path)" target="_blank"></td>
+            </tr>-->
+                                    <tr ng-repeat="result in results">
+                                        <td>{{result.FileName}}</td>
+                                        <td>{{result.Path}}</td>
+                                        <td><input type="button" value="View" ng-click="DownloadUploadedFile(result.Path)" target="_blank"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><br />
+
+                        <br />
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Attachment One</label>
+                            <div class="controls">
+                                <input type="file" ID="FileUpload1" ng-model="ConsultantTraininglist.fileName" value="Attachment One">
+
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Attachment Two</label>
+                            <div class="controls">
+
+                                <input type="file" ID="FileUpload2" ng-model="ConsultantTraininglist.fileName2" value="Attachment Two">
+                            </div>
+                        </div>
+                        <br />
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="inputTask">Comment</label>
+                            <div class="controls">
+                                <textarea class="redacted" type="text" id="fullName" name="fullName" placeholder="Comment.." ng-model="ConsultantTraininglist.comment" tabindex="5" rows="10"></textarea>
+                            </div>
+                        </div>
+
+
+                        <!--<div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input ng-model="ConsultantTraininglist.done" type="checkbox"> Done
+            </label>
+        </div>
+    </div>-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                     <!--<button  class="btn" onClick="refreshPage()" ng-click="updateConsultant(ConsultantTraininglist)" data-dismiss="modal">Update</button>-->
+                    <!--<button ID="btnUpdate" class="btn" onClick="refreshPage()"  data-dismiss="modal">Update</button>
+                    <button class="btn" onClick="refreshPage()" data-dismiss="modal" aria-hidden="true">Cancel</button>-->
+                    <input type="submit"  ID="btnUpdate"   data-dismiss="modal" value="Update" />
+                    <input type="submit" data-dismiss="modal" aria-hidden="true" value="Cancel" onClick="window.location.reload()" />
+            </div>
+            <!-- End Edit Modal -->
+            <div id="edit2" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+
+
+
+            </div>
+
+
+        </div>
+    </form>
+</body>
+</html>

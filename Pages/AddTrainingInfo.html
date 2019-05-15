@@ -1,0 +1,210 @@
+﻿<!--<link href="../css/navbar.css" rel="stylesheet" />
+<link href="../css/UpdateformStyle .css" rel="stylesheet" />
+<link href="../css/InputValidationStyleSheet.css" rel="stylesheet" />-->
+<link href="http://xinixserver/XINIX_TrainingX/css/navbar.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/UpdateformStyle.css" rel="stylesheet" />
+<link href="http://xinixserver/XINIX_TrainingX/css/InputValidationStyleSheet.css" rel="stylesheet" />
+<div class="navbar">
+    <a href="#/viewTraining"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="#/viewTraining"> Training Information </a>
+    <a href="#/viewProduct"> Product </a>
+    <a href="#/outStanding"> Outstanding Training </a>
+    <a style="float:right" href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Log out</a>
+    <label style="color:white;margin:15px;">Welcome {{userName}}</label>
+    <!--<div class="dropdown">
+        <button class="dropbtn">
+
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="" ng-click="logout()">Log out</a>
+        </div>
+    </div>-->
+</div>
+
+
+<script type="text/javascript">
+    //$(function () {
+    //    var reader = new FileReader();
+    //    var fileName;
+    //    $('[id*=FileUpload1]').change(function () {
+    //        if (typeof (FileReader) != "undefined") {
+    //            //var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+    //            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.doc|.docx|.pdf)$/;
+    //            $($(this)[0].files).each(function () {
+    //                var file = $(this);
+    //                if (regex.test(file[0].name.toLowerCase())) {
+    //                    fileName = file[0].name;
+    //                    reader.readAsDataURL(file[0]);
+    //                } else {
+    //                    alert(file[0].name + " is not a valid image file.");
+    //                    return false;
+    //                }
+    //            });
+    //        } else {
+    //            alert("This browser does not support HTML5 FileReader.");
+    //        }
+    //    });
+
+    //    $("[id*=btnSave]").click(function () {
+    //        var byteData = reader.result;
+    //        byteData = byteData.split(';')[1].replace("base64,", "");
+    //        var obj = {};
+    //        obj.Data = byteData;
+    //        obj.FileName = fileName;
+    //        //obj.TrainingID;
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "TrainingService.asmx/SaveImage",
+    //            data: '{EmployeeID: ' + JSON.stringify($scope.empID) + ',ProductId: ' + JSON.stringify($scope.prodId) + ', DateCompleted: ' + JSON.stringify($scope.completed) + ', VerifiedDate:' + JSON.stringify($scope.verified) + ',TrainingProvidedBy: ' + JSON.stringify($scope.providedBy) + ', TypeOfAssessment: ' + JSON.stringify($scope.typeOfAssessment) + ', ExpectationForCompetence: ' + JSON.stringify($scope.expectation) + ', OutcomeStatus: ' + JSON.stringify($scope.outcomeStatus) + ', Comment: ' + JSON.stringify($scope.comment)+', fileData: ' + JSON.stringify(obj) + '    }',
+    //            //data: '{fileData : ' + JSON.stringify(obj) + ' }',
+    //            contentType: "application/json; charset=utf-8",
+    //            dataType: "json",
+    //            success: function (r) {
+    //                alert("Upload successfully.");
+    //            },
+    //            error: function (r) {
+    //                alert(r.responseText);
+    //            },
+    //            failure: function (r) {
+    //                alert(r.responseText);
+    //            }
+    //        });
+    //        return false;
+    //    });
+    //});
+</script>
+<!--<script>
+        $scope.imageSrc = "";
+    $http.get("http://XINIXSERVER/XINIX_TrainingX/TrainingService.asmx/OpenFromSqlDatabase")
+            .then(function (response) {
+                $scope.imageSrc = response.data;
+            });
+
+</script>-->
+<form name="exampleForm" novalidate>
+    <div ng-controller="addTrainingCntrl">
+
+        <h1> Product Training Information</h1>
+
+        <!--<input type="button" ID="btnSave" value="Upload" class="redacted" />-->
+
+        <div class="group">
+            <div class="left">
+                <label for="phone" class="redacted">Employee Name</label>
+                <select name="emp_name" class="redacted" ng-model="empID" required>
+
+                    <option ng-repeat="consultant in EmpTraininglist" value="{{consultant.EmployeeID}}">
+                        {{consultant.ConsultantName}}
+                        <!--{{consultant.FirstName}}{{"  "}}{{consultant.LastName}}-->
+
+
+                    </option>
+
+                </select>
+                <div ng-if="submitted || exampleForm.emp_name.$dirty"
+                     ng-messages="exampleForm.emp_name.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="fullName" class="redacted">Product Type</label>
+                <select name="prod_type" class="redacted" ng-model="selectedProductType" ng-options="item.ProductType as item.ProductType for item in ProductTypelist | unique:'ProductType'" required>
+                    <option value="">Choose</option>
+                </select>
+                <div ng-if="submitted || exampleForm.prod_type.$dirty"
+                     ng-messages="exampleForm.prod_type.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+            <div class="right">
+                <label for="fullName" class="redacted">Product Sub Type</label>
+                <select name="prod_sub_type" class="redacted" ng-model="prodId" ng-options="item.Id as item.ProductSubType for item in Productlist|filter:{ProductType:selectedProductType}" required></select>
+                <div ng-if="submitted || exampleForm.prod_sub_type.$dirty"
+                     ng-messages="exampleForm.prod_sub_type.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="phone" class="redacted">Date Completed</label>
+                <input type="Date" name="date_completed" placeholder="Date completed.." ng-model="completed" class="redacted" required />
+                <div ng-if="submitted || exampleForm.date_completed.$dirty"
+                     ng-messages="exampleForm.date_completed.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+            <div class="right">
+                <label for="phone" class="redacted">Date Verified</label>
+                <input type="Date" name="date_verified" placeholder="Date verified.." ng-model="verified" class="redacted" required />
+                <div ng-if="submitted || exampleForm.date_verified.$dirty"
+                     ng-messages="exampleForm.date_verified.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="phone" class="redacted">Training Provided By</label>
+                <input type="text" name="training_providedby" placeholder="Training provided by.." ng-model="providedBy" class="redacted" required />
+                <div ng-if="submitted || exampleForm.training_providedby.$dirty"
+                     ng-messages="exampleForm.training_providedby.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+            <div class="right">
+                <label for="phone" class="redacted">Type Of Assessment</label>
+                <input type="text" name="type_of_ass" placeholder="Type of assessment.." ng-model="typeOfAssessment" class="redacted" required />
+                <div ng-if="submitted || exampleForm.type_of_ass.$dirty"
+                     ng-messages="exampleForm.type_of_ass.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="expectation" class="redacted">Expectation</label>
+                <input type="text" name="expetation" placeholder="Expectation.." ng-model="expectation" class="redacted" required />
+                <div ng-if="submitted || exampleForm.expetation.$dirty"
+                     ng-messages="exampleForm.expetation.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+            <div class="right">
+                <label for="phone" class="redacted">Outcome Status</label>
+                <select name="outcome_status" ng-model="outcomeStatus" maxlength="30" class="redacted" ng-options="x for x in outcomeStatu" required></select>
+                <div ng-if="submitted || exampleForm.outcome_status.$dirty"
+                     ng-messages="exampleForm.outcomeStatus.$error" style="color:darkgray" role="alert">
+                    <div ng-message="required">You did not enter a field</div>
+                </div>
+            </div>
+        </div>
+        <div class="group">
+            <div class="left">
+                <label for="phone" class="redacted">Attachment One</label>
+                <input type="file" ID="FileUpload1" class="redacted" />
+
+            </div>
+            <div class="right">
+                <label for="phone" class="redacted">Attachment Two</label>
+                <input type="file" ID="FileUpload2" class="redacted" />
+
+            </div>
+        </div>
+
+        <div>
+            <label for="phone" class="redacted">Comment</label>
+            <textarea type="text" name="comment" placeholder="Comment.." ng-model="comment" tabindex="5" rows="10" class="redacted"></textarea>
+        </div>
+        <div>
+            <!--<input type="submit" value="Save" ng-click="Save()" class="redacted" />-->
+            <input type="submit" ID="btnSave" onClick="refreshPage()" value="Save" class="redacted" />
+        </div>
+    </div>
+</form>
