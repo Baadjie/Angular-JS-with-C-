@@ -1,0 +1,271 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNuk6xewK/innS3erpaq4M8",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Baadjie/Angular-JS-with-C-/blob/master/NewsCategorizer\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "npgcP_-UiJt2",
+        "outputId": "65511fde-58d0-49e0-bf6c-9bd8a862dfc7"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: pandas in /usr/local/lib/python3.10/dist-packages (2.2.2)\n",
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.10/dist-packages (1.5.2)\n",
+            "Requirement already satisfied: numpy>=1.22.4 in /usr/local/lib/python3.10/dist-packages (from pandas) (1.26.4)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.10/dist-packages (from pandas) (2.8.2)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas) (2024.2)\n",
+            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/dist-packages (from pandas) (2024.2)\n",
+            "Requirement already satisfied: scipy>=1.6.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.13.1)\n",
+            "Requirement already satisfied: joblib>=1.2.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.4.2)\n",
+            "Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (3.5.0)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)\n"
+          ]
+        }
+      ],
+      "source": [
+        "pip install pandas scikit-learn\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.metrics import classification_report\n",
+        "from sklearn.model_selection import cross_val_score\n",
+        "\n",
+        "# Step 1: Load the data\n",
+        "labeled_data = pd.read_csv(\"/content/categorized_descriptions.csv\")  # Columns: \"description\", \"category\"\n",
+        "unlabeled_data = pd.read_csv(\"/content/bbc_news_20220307_20240703.csv\")  # Column: \"description\"\n",
+        "\n",
+        "# Step 2: Split labeled data into training and validation sets\n",
+        "train, val = train_test_split(labeled_data, test_size=0.2, random_state=42, stratify=labeled_data[\"category\"])\n",
+        "\n",
+        "# Step 3: Preprocess text with TF-IDF\n",
+        "vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))\n",
+        "X_train = vectorizer.fit_transform(train[\"description\"])\n",
+        "X_val = vectorizer.transform(val[\"description\"])\n",
+        "X_unlabeled = vectorizer.transform(unlabeled_data[\"description\"])\n",
+        "\n",
+        "# Encode labels\n",
+        "categories = sorted(train[\"category\"].unique())  # Sort categories for consistency\n",
+        "category_to_id = {category: i for i, category in enumerate(categories)}\n",
+        "id_to_category = {i: category for category, i in category_to_id.items()}\n",
+        "\n",
+        "y_train = train[\"category\"].map(category_to_id)\n",
+        "y_val = val[\"category\"].map(category_to_id)\n",
+        "\n",
+        "# Step 4: Train a Logistic Regression model with class balancing\n",
+        "clf = LogisticRegression(max_iter=1000, class_weight='balanced')\n",
+        "clf.fit(X_train, y_train)\n",
+        "\n",
+        "# Step 5: Evaluate the model on validation data\n",
+        "y_val_pred = clf.predict(X_val)\n",
+        "\n",
+        "# Get unique categories from the validation set\n",
+        "val_categories = sorted(val[\"category\"].unique())\n",
+        "\n",
+        "# Print the classification report with the correct number of categories\n",
+        "print(\"Validation Classification Report:\")\n",
+        "print(classification_report(y_val, y_val_pred, target_names=val_categories))\n",
+        "\n",
+        "# Step 6: Cross-validation to assess model performance\n",
+        "cross_val_scores = cross_val_score(clf, X_train, y_train, cv=5)  # 5-fold cross-validation\n",
+        "print(f\"Cross-validation scores: {cross_val_scores}\")\n",
+        "print(f\"Mean cross-validation score: {cross_val_scores.mean()}\")\n",
+        "\n",
+        "# Step 7: Predict categories for the uncategorized data\n",
+        "unlabeled_predictions = clf.predict(X_unlabeled)\n",
+        "unlabeled_data[\"predicted_category\"] = [id_to_category[pred] for pred in unlabeled_predictions]\n",
+        "\n",
+        "# Step 8: Save the categorized data\n",
+        "unlabeled_data.to_csv(\"categorized_records.csv\", index=False)\n",
+        "print(\"Predictions saved to 'categorized_records.csv'.\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "eUWonpghoIBD",
+        "outputId": "c9b0299d-0575-414b-a319-3dc4925db4ad"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Validation Classification Report:\n",
+            "              precision    recall  f1-score   support\n",
+            "\n",
+            "     Economy       1.00      0.67      0.80         3\n",
+            "     General       0.96      0.99      0.97       160\n",
+            "    Politics       1.00      1.00      1.00         4\n",
+            "   Terrorism       1.00      0.33      0.50         3\n",
+            "War/Conflict       0.93      0.87      0.90        30\n",
+            "\n",
+            "    accuracy                           0.95       200\n",
+            "   macro avg       0.98      0.77      0.83       200\n",
+            "weighted avg       0.96      0.95      0.95       200\n",
+            "\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.10/dist-packages/sklearn/model_selection/_split.py:776: UserWarning: The least populated class in y has only 2 members, which is less than n_splits=5.\n",
+            "  warnings.warn(\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Cross-validation scores: [0.875      0.95       0.89375    0.9        0.88679245]\n",
+            "Mean cross-validation score: 0.9011084905660377\n",
+            "Predictions saved to 'categorized_records.csv'.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.metrics import classification_report\n",
+        "\n",
+        "# Step 1: Load the data\n",
+        "labeled_data = pd.read_csv(\"/content/categorized_descriptions.csv\")  # Columns: \"description\", \"category\"\n",
+        "unlabeled_data = pd.read_csv(\"/content/bbc_news_20220307_20240703.csv\")  # Column: \"description\"\n",
+        "\n",
+        "# Step 2: Split labeled data into training and validation sets\n",
+        "train, val = train_test_split(labeled_data, test_size=0.2, random_state=42, stratify=labeled_data[\"category\"])\n",
+        "\n",
+        "# Step 3: Preprocess text with TF-IDF\n",
+        "vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))\n",
+        "\n",
+        "# Fit TF-IDF on the training data and transform all datasets\n",
+        "X_train = vectorizer.fit_transform(train[\"description\"])\n",
+        "X_val = vectorizer.transform(val[\"description\"])\n",
+        "X_unlabeled = vectorizer.transform(unlabeled_data[\"description\"])\n",
+        "\n",
+        "# Encode labels\n",
+        "categories = train[\"category\"].unique()\n",
+        "category_to_id = {category: i for i, category in enumerate(categories)}\n",
+        "id_to_category = {i: category for category, i in category_to_id.items()}\n",
+        "\n",
+        "y_train = train[\"category\"].map(category_to_id)\n",
+        "y_val = val[\"category\"].map(category_to_id)\n",
+        "\n",
+        "# Step 4: Train a Logistic Regression model\n",
+        "clf = LogisticRegression(max_iter=1000)\n",
+        "clf.fit(X_train, y_train)\n",
+        "\n",
+        "# Step 5: Evaluate the model on validation data\n",
+        "y_val_pred = clf.predict(X_val)\n",
+        "\n",
+        "# Fix for potential mismatch in target_names size\n",
+        "# Match target_names to the unique categories in y_val (validation data)\n",
+        "target_names = [id_to_category[i] for i in range(len(set(y_val)))]  # Use set(y_val) to match unique categories\n",
+        "\n",
+        "# Print classification report\n",
+        "print(\"Validation Classification Report:\")\n",
+        "print(classification_report(y_val, y_val_pred, target_names=target_names))\n",
+        "\n",
+        "# Step 6: Predict categories for the uncategorized data\n",
+        "unlabeled_predictions = clf.predict(X_unlabeled)\n",
+        "unlabeled_data[\"predicted_category\"] = [id_to_category[pred] for pred in unlabeled_predictions]\n",
+        "\n",
+        "# Step 7: Save the categorized data\n",
+        "unlabeled_data.to_csv(\"/content/categorized_records.csv\", index=False)\n",
+        "print(\"Predictions saved to 'categorized_records.csv'.\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-wjYEHakj_fx",
+        "outputId": "22726b67-aa70-4b47-d1e7-a6e6bf81a8c8"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Validation Classification Report:\n",
+            "              precision    recall  f1-score   support\n",
+            "\n",
+            "     General       0.85      1.00      0.92       160\n",
+            "War/Conflict       1.00      0.40      0.57        30\n",
+            "     Economy       0.00      0.00      0.00         3\n",
+            "   Terrorism       0.00      0.00      0.00         3\n",
+            "    Politics       0.00      0.00      0.00         4\n",
+            "\n",
+            "    accuracy                           0.86       200\n",
+            "   macro avg       0.37      0.28      0.30       200\n",
+            "weighted avg       0.83      0.86      0.82       200\n",
+            "\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Predictions saved to 'categorized_records.csv'.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
